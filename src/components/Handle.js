@@ -7,8 +7,16 @@ const Handle = ({
   handle: { id, value, percent = 0 },
   disabled,
   getHandleProps,
+  errorColor,
+  validColor
 }) => {
   const leftPosition = `${percent}%`
+
+  const getHandleStyle = () => {
+    if(disabled) return undefined;
+    if(error) return { backgroundColor: errorColor };
+    return { backgroundColor: validColor };
+  }
 
   return (
     <>
@@ -21,7 +29,7 @@ const Handle = ({
         className={`react_time_range__handle_container${disabled ? '__disabled' : ''}`}
         style={{ left: leftPosition }}
       >
-        <div className={`react_time_range__handle_marker${error ? '__error' : ''}`} />
+        <div className={`react_time_range__handle_marker${error ? '__error' : ''}`} style={getHandleStyle()} />
       </div>
     </>
   )
@@ -37,8 +45,14 @@ Handle.propTypes = {
   getHandleProps: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   style: PropTypes.object,
+  errorColor: PropTypes.string,
+  validColor: PropTypes.string,
 }
 
-Handle.defaultProps = { disabled: false }
+Handle.defaultProps = { 
+  disabled: false,
+  errorColor: 'rgb(214, 0, 11)',
+  validColor: 'rgb(98, 203, 102)'
+}
 
 export default Handle

@@ -18,6 +18,8 @@
 |formatTick|function|ms => format(new Date(ms), 'HH:mm')|Function that determines the format in which the date will be displayed|
 |onUpdateCallback|function|||
 |onChangeCallback|function|||
+|trackStyles|object|{error: {backgroundColor: 'red'}, valid: {...}}|Styles for the track|
+|handleColors|object|{error: 'red', valid: 'green'}|Styles for the handle|
 ### Example
 [Live demo](https://codesandbox.io/s/react-timeline-range-slider-ve7w2?file=/src/App.js)
 ```javascript
@@ -62,6 +64,22 @@ class App extends React.Component {
           onUpdateCallback={this.errorHandler}  
           onChangeCallback={this.onChangeCallback}
           disabledIntervals={disabledIntervals}  
+          trackStyles={{
+            error: {
+              backgroundColor: 'rgba(214,0,11,0.5)',
+              borderLeft: '1px solid rgba(214,0,11,0.5)',
+              borderRight: '1px solid rgba(214,0,11,0.5)',
+            },
+            valid: {
+              backgroundColor: 'rgba(98, 203, 102, 0.5)',
+              borderLeft: '1px solid #62CB66',
+              borderRight: '1px solid #62CB66',
+            }
+          }}
+          handleColors={{
+            error: 'rgb(214, 0, 11)',
+            valid: 'rgb(98, 203, 102)'
+          }}
         />
       )  
   }  

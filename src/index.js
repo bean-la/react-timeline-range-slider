@@ -118,6 +118,8 @@ class TimeRange extends React.Component {
       showNow,
       formatTick,
       mode,
+      trackStyles,
+      handleColors
     } = this.props
 
     const domain = timelineInterval.map(t => Number(t))
@@ -150,6 +152,9 @@ class TimeRange extends React.Component {
                     handle={handle}
                     domain={domain}
                     getHandleProps={getHandleProps}
+                    styles={trackStyles}
+                    errorColor={handleColors.error}
+                    validColor={handleColors.valid}
                   />
                 ))}
               </>
@@ -166,6 +171,7 @@ class TimeRange extends React.Component {
                     source={source}
                     target={target}
                     getTrackProps={getTrackProps}
+                    styles={trackStyles}
                   />
                 )}
               </>
@@ -183,6 +189,7 @@ class TimeRange extends React.Component {
                       target={target}
                       getTrackProps={getTrackProps}
                       disabled
+                      styles={trackStyles}
                     />
                   ))}
                 </>
@@ -198,6 +205,7 @@ class TimeRange extends React.Component {
                   source={this.now?.source}
                   target={this.now?.target}
                   getTrackProps={getTrackProps}
+                  styles={trackStyles}
                 />
               )}
             </Tracks>
@@ -232,6 +240,14 @@ TimeRange.propTypes = {
   sliderRailClassName: PropTypes.string,
   step: PropTypes.number,
   formatTick: PropTypes.func,
+  trackStyles: PropTypes.shape({
+    error: PropTypes.object,
+    valid: PropTypes.object,
+  }),
+  handleColors: PropTypes.shape({
+    error: PropTypes.string,
+    valid: PropTypes.string,
+  }),
 }
 
 TimeRange.defaultProps = {
@@ -246,6 +262,22 @@ TimeRange.defaultProps = {
   ticksNumber: 48,
   error: false,
   mode: 3,
+  trackStyles: {
+    error: {
+      backgroundColor: 'rgba(214,0,11,0.5)',
+      borderLeft: '1px solid rgba(214,0,11,0.5)',
+      borderRight: '1px solid rgba(214,0,11,0.5)',
+    },
+    valid: {
+      backgroundColor: 'rgba(98, 203, 102, 0.5)',
+      borderLeft: '1px solid #62CB66',
+      borderRight: '1px solid #62CB66',
+    }
+  },
+  handleColors: {
+    error: 'rgb(214, 0, 11)',
+    valid: 'rgb(98, 203, 102)'
+  }
 }
 
 export default TimeRange
