@@ -25,7 +25,8 @@
     "react-dom": "^17.0.2"
   },
   "scripts": {
-    "build": "rm -rf ./dist/ && tsc",
+    "copyfiles": "mkdir ./dist/styles && cp ./src/styles/index.scss ./dist/styles/index.scss",
+    "build": "rm -rf ./dist/ && tsc && npm run copyfiles",
     "start": "webpack --watch",
     "webpack-build": "webpack",
     "prepublish": "npm run build"
