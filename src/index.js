@@ -104,7 +104,7 @@ class TimeRange extends React.Component {
 
   getDateTicks = () => {
     const { timelineInterval, ticksNumber } = this.props
-    return scaleTime().domain(timelineInterval).ticks(ticksNumber).map(t => +t)
+    return scaleTime(timelineInterval, ticksNumber).map(t => +t)
   }
 
   render() {
