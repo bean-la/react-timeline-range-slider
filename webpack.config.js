@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -44,4 +48,18 @@ module.exports = {
       root: 'ReactDOM',
     },
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        minify: TerserPlugin.swcMinify,
+        // `terserOptions` options will be passed to `swc` (`@swc/core`)
+        // Link to options - https://swc.rs/docs/config-js-minify
+        terserOptions: {
+          mangle: true,
+        },
+      }),
+    ],
+  },
+  plugins: [new ForkTsCheckerWebpackPlugin(), new CleanWebpackPlugin()],
 };
