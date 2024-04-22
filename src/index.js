@@ -58,7 +58,168 @@ const getNowConfig = ([startTime, endTime])  => {
   return { id: 'now-track', source, target }
 }
 
-class TimeRange extends React.Component {
+function TimeRange(props) {
+  const {
+    sliderRailClassName,
+    timelineInterval,
+    selectedInterval,
+    containerClassName,
+    error,
+    step,
+    showNow,
+    formatTick,
+    mode,
+    trackStyles,
+    handleColors
+  } = props
+
+  const disabledIntervals = getFormattedBlockedIntervals(props.disabledIntervals, props.timelineInterval);
+
+  const now = getNowConfig(props.timelineInterval);
+
+  const onChange = newTime => {
+    const formattedNewTime = newTime.map(t => new Date(t));
+    props.onChangeCallback(formattedNewTime);
+  }
+
+  const checkIsSelectedIntervalNotValid = ([start, end], source, target) => {
+    const { value: startInterval } = source;
+    const { value: endInterval } = target;
+
+    if (startInterval > start && endInterval <= end || startInterval >= start && endInterval < end) return true;
+    if (start >= startInterval && end <= endInterval) return true;
+
+    const isStartInBlockedInterval = start > startInterval && start < endInterval && end >= endInterval;
+    const isEndInBlockedInterval = end < endInterval && end > startInterval && start <= startInterval;
+
+    return isStartInBlockedInterval || isEndInBlockedInterval;
+  }
+
+  const onUpdate = newTime => {
+    if (disabledIntervals?.length) {
+      const isValuesNotValid = disabledIntervals.some(({ source, target }) =>
+        checkIsSelectedIntervalNotValid(newTime, source, target));
+      const formattedNewTime = newTime.map(t => new Date(t));
+      onUpdateCallback({ error: isValuesNotValid, time: formattedNewTime });
+      return;
+    }
+
+    const formattedNewTime = newTime.map(t => new Date(t));
+    onUpdateCallback({ error: false, time: formattedNewTime });
+  }
+
+  const getDateTicks = () => {
+    const { timelineInterval, ticksNumber } = props;
+    return scaleTime().domain(timelineInterval).ticks(ticksNumber).map(t => +t);
+  }
+
+  const domain = timelineInterval.map(t => Number(t));
+
+  return (
+    <div className={containerClassName || 'react_time_range__time_range_container' }>
+      <Slider
+        mode={mode}
+        step={step}
+        domain={domain}
+        onUpdate={onUpdate}
+        onChange={onChange}
+        values={selectedInterval.map(t => +t)}
+        rootStyle={{ position: 'relative', width: '100%' }}
+      >
+        <Rail>
+          {({ getRailProps }) =>
+            <SliderRail className={sliderRailClassName} getRailProps={getRailProps} />}
+        </Rail>
+
+        <Handles>
+          {({ handles, getHandleProps }) => (
+            <>
+              {handles.map(handle => (
+                <Handle
+                  error={error}
+                  key={handle.id}
+                  handle={handle}
+                  domain={domain}
+                  getHandleProps={getHandleProps}
+                  styles={trackStyles}
+                  errorColor={handleColors.error}
+                  validColor={handleColors.valid}
+                />
+              ))}
+            </>
+          )}
+        </Handles>
+
+        <Tracks left={false} right={false}>
+          {({ tracks, getTrackProps }) => (
+            <>
+              {tracks?.map(({ id, source, target }) =>
+                <Track
+                  error={error}
+                  key={id}
+                  source={source}
+                  target={target}
+                  getTrackProps={getTrackProps}
+                  styles={trackStyles}
+                />
+              )}
+            </>
+          )}
+        </Tracks>
+
+        {disabledIntervals?.length && (
+          <Tracks left={false} right={false}>
+            {({ getTrackProps }) => (
+              <>
+                {disabledIntervals.map(({ id, source, target }) => (
+                  <Track
+                    key={id}
+                    source={source}
+                    target={target}
+                    getTrackProps={getTrackProps}
+                    disabled
+                    styles={trackStyles}
+                  />
+                ))}
+              </>
+            )}
+          </Tracks>
+        )}
+
+        {(showNow && now) && (
+          <Tracks left={false} right={false}>
+            {({ getTrackProps }) => (
+              <Track
+                key={now.id}
+                source={now.source}
+                target={now.target}
+                getTrackProps={getTrackProps}
+                styles={trackStyles}
+              />
+            )}
+          </Tracks>
+        )}
+
+        <Ticks values={getDateTicks()}>
+          {({ ticks }) => (
+            <>
+              {ticks.map(tick => (
+                <Tick
+                  key={tick.id}
+                  tick={tick}
+                  count={ticks.length}
+                  format={formatTick}
+                />
+              ))}
+            </>
+          )}
+        </Ticks>
+      </Slider>
+    </div>
+  );
+}
+
+class TimeRangeComponent extends React.Component {
   get disabledIntervals () {
     return getFormattedBlockedIntervals(this.props.disabledIntervals, this.props.timelineInterval)
   }
@@ -231,7 +392,7 @@ class TimeRange extends React.Component {
   }
 }
 
-TimeRange.propTypes = {
+TimeRangeComponent.propTypes = {
   ticksNumber: PropTypes.number.isRequired,
   selectedInterval: PropTypes.arrayOf(PropTypes.object),
   timelineInterval: PropTypes.arrayOf(PropTypes.object),
@@ -250,7 +411,7 @@ TimeRange.propTypes = {
   }),
 }
 
-TimeRange.defaultProps = {
+TimeRangeComponent.defaultProps = {
   selectedInterval: [
     set(new Date(), { minutes: 0, seconds: 0, milliseconds: 0 }),
     set(addHours(new Date(), 1), { minutes: 0, seconds: 0, milliseconds: 0 })
@@ -280,4 +441,5 @@ TimeRange.defaultProps = {
   }
 }
 
-export default TimeRange
+export { TimeRangeComponent };
+export default TimeRange;
