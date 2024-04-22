@@ -44,7 +44,6 @@
     ]
   },
   "dependencies": {
-    "d3-interpolate": "^3.0.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^2.19.0",
     "prop-types": "^15.7.2",
