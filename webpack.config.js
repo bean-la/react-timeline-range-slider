@@ -1,33 +1,31 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
     library: 'react-timeline-range-slider',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: path.resolve(__dirname, 'src'),
+        test: /\.(ts|tsx)$/,
+        loader: 'swc-loader',
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react', "@babel/preset-env"]
-          }
-        }
-      }, {
-        test: /\.s[ac]ss$/i,
-        use : [ 'style-loader', 'css-loader', 'sass-loader']
       },
-    ]
+      {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
   },
   externals: {
-    'react': 'commonjs react'
-  }
+    react: 'commonjs react',
+  },
 };
