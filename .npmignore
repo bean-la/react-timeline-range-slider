@@ -3,3 +3,9 @@ webpack.config.js
 .eslintrc
 .gitignore
 .babelrc
+.eslintignore
+.nvmrc
+.prettierrc.json
+.swcrc
+tsconfig.json
+.eslintrc.js
