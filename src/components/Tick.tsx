@@ -8,7 +8,7 @@ interface TickProps {
     percent: number;
   };
   count: number;
-  format: (d: number) => string;
+  format?: (d: number) => string;
 }
 
 const Tick: React.FC<TickProps> = ({ tick, count, format = (d) => d }) => {

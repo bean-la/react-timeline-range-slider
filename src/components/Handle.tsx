@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface HandleProps {
-  error: boolean;
+  error?: boolean;
   domain: number[];
   handle: {
     id: string;
@@ -10,8 +10,8 @@ interface HandleProps {
   };
   disabled?: boolean;
   getHandleProps: (id: string) => object;
-  errorColor: string;
-  validColor: string;
+  errorColor?: string;
+  validColor?: string;
 }
 
 const Handle: React.FC<HandleProps> = ({

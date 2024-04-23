@@ -18,7 +18,7 @@ const getTimelineConfig = (timelineStart: Date, timelineLength: number) => (date
 
 const getFormattedBlockedIntervals = (
   blockedDates: { start: Date; end: Date }[] = [],
-  [startTime, endTime]: [Date, Date],
+  [startTime, endTime]: Date[],
 ) => {
   if (!blockedDates.length) return null;
 
@@ -40,7 +40,7 @@ const getFormattedBlockedIntervals = (
   return formattedBlockedDates;
 };
 
-const getNowConfig = ([startTime, endTime]: [Date, Date]) => {
+const getNowConfig = ([startTime, endTime]: Date[]) => {
   const timelineLength = differenceInMilliseconds(endTime, startTime);
   const getConfig = getTimelineConfig(startTime, timelineLength);
 
@@ -52,18 +52,18 @@ const getNowConfig = ([startTime, endTime]: [Date, Date]) => {
 
 interface TimeRangeProps {
   ticksNumber: number;
-  selectedInterval: [Date, Date];
-  timelineInterval: [Date, Date];
+  selectedInterval: Date[];
+  timelineInterval: Date[];
   disabledIntervals: { start: Date; end: Date }[];
   containerClassName?: string;
   sliderRailClassName?: string;
   step: number;
   formatTick: (ms: number) => string;
-  trackStyles: { error: object; valid: object };
-  handleColors: { error: string; valid: string };
-  error: boolean;
-  showNow: boolean;
-  mode: 1 | 2 | 3;
+  trackStyles?: { error: object; valid: object };
+  handleColors?: { error: string; valid: string };
+  error?: boolean;
+  showNow?: boolean;
+  mode?: 1 | 2 | 3;
   onUpdateCallback: (data: { error: boolean; time: Date[] }) => void;
   onChangeCallback: (data: Date[]) => void;
 }
@@ -168,8 +168,8 @@ class TimeRange extends React.Component<TimeRangeProps> {
                     handle={handle}
                     domain={domain}
                     getHandleProps={getHandleProps}
-                    errorColor={handleColors.error}
-                    validColor={handleColors.valid}
+                    errorColor={handleColors?.error}
+                    validColor={handleColors?.valid}
                   />
                 ))}
               </>
