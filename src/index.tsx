@@ -8,7 +8,7 @@ import Track from './components/Track';
 import Tick from './components/Tick';
 import Handle from './components/Handle';
 
-import './styles/index.scss';
+// import './styles/index.scss';
 
 const getTimelineConfig = (timelineStart: Date, timelineLength: number) => (date: Date) => {
   const percent = (differenceInMilliseconds(date, timelineStart) / timelineLength) * 100;
