@@ -3,7 +3,7 @@
   "version": "2.0.7",
   "description": "Time Slider component for React",
   "author": "Harvey Connor",
-  "main": "src/index.tsx",
+  "main": "dist/index.js",
   "license": "MIT",
   "homepage": "https://github.com/harveyconnor/react-timeline-range-slider",
   "repository": {
@@ -27,7 +27,8 @@
   "scripts": {
     "start": "webpack --watch",
     "webpack-build": "webpack",
-    "prepublish": "npm run build"
+    "prepublish": "npm run webpack-build",
+    "postinstall": "npm run webpack-build"
   },
   "eslintConfig": {
     "extends": "react-app"
