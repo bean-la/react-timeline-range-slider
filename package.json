@@ -30,7 +30,7 @@
     "webpack-build": "webpack",
     "build": "tsc -p .",
     "prepublish": "npm run webpack-build",
-    "postinstall": "npm run build"
+    "postinstall": "pnpm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
